@@ -48,7 +48,7 @@ class Provider extends AbstractProvider
     {
         $response = $this->getHttpClient()->get('https://www.bungie.net/Platform/User/GetCurrentBungieNetUser/', [
             'headers' => [
-                'X-API-Key' => env('BUNGIE_API_KEY'),
+                'X-API-Key' => env('BUNGIE_CLIENT_API_KEY'),
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer '.$token,
             ],
