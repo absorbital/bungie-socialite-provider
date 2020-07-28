@@ -1,5 +1,5 @@
 {
-    "name": "socialiteproviders/bungie",
+    "name": "absorbital/bungie-socialite-provider",
     "description": "Bungie OAuth2 Provider for Laravel Socialite",
     "license": "MIT",
     "authors": [{
