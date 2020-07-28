@@ -2,7 +2,6 @@
 
 namespace SocialiteProviders\Bungie;
 
-use Illuminate\Support\Arr;
 use SocialiteProviders\Manager\OAuth2\User;
 use SocialiteProviders\Manager\OAuth2\AbstractProvider;
 
@@ -22,12 +21,6 @@ class Provider extends AbstractProvider
      * {@inheritdoc}
      */
     protected $scopeSeparator = '';
-
-    /**
-     * User details are currently provided by the membership id.
-     * @var $membershipId
-     */
-    protected $membershipId = null;
 
     /**
      * {@inheritdoc}
@@ -53,13 +46,11 @@ class Provider extends AbstractProvider
      */
     protected function getUserByToken($token)
     {
-        $this->setMembershipId(
-            Arr::get($this->getAccessTokenResponse($this->getCode()), 'membership_id')
-        );
-
-        $response = $this->getHttpClient()->get('https://www.bungie.net/platform/user/GetBungieNetUserById/'.$this->getMembershipId().'/', [
+        $response = $this->getHttpClient()->get('https://www.bungie.net/Platform/User/GetCurrentBungieNetUser/', [
             'headers' => [
                 'X-API-Key' => env('BUNGIE_API_KEY')
+                'Accept'        => 'application/json',
+                'Authorization' => 'Bearer '.$token,
             ],
         ]);
 
@@ -90,24 +81,4 @@ class Provider extends AbstractProvider
         ]);
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param int $id
-     * @return void
-     */
-    private function setMembershipId($id)
-    {
-        $this->membershipId = $id;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return int $membershipId
-     */
-    private function getMembershipId()
-    {
-        return $this->getMembershipId;
-    }
 }
