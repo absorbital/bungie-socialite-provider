@@ -44,8 +44,18 @@ class Provider extends AbstractProvider
     /**
      * {@inheritdoc}e
      */
-    protected function getUserByToken($token)
+    protected function getUserByToken($token = null)
     {
+        if ($this->hasInvalidState()) {
+            throw new InvalidStateException();
+        }
+
+        $token = ($token !== null) 
+            ? $token 
+            : $this->getAccessTokenResponse(
+                $this->getCode()
+        );
+
         $response = $this->getHttpClient()->get('https://www.bungie.net/Platform/User/GetCurrentBungieNetUser/', [
             'headers' => [
                 'X-API-Key' => env('BUNGIE_CLIENT_API_KEY'),
